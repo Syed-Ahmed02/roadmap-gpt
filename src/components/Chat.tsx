@@ -1,5 +1,6 @@
 "use client";
-
+import { FormSchema } from "./RoadmapForm";
+import {z} from "zod"
 import { useState, FormEvent } from "react";
 import { Paperclip, Mic, CornerDownLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,8 +12,8 @@ import {
 import { ChatMessageList } from "@/components/ui/chat-message-list";
 import { ChatInput } from "@/components/ui/chat-input";
 
-export function Chat() {
-  const [messages, setMessages] = useState([
+export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
+    const [messages, setMessages] = useState([
     {
       id: 1,
       content: "Hello! How can I help you today?",
@@ -61,16 +62,8 @@ export function Chat() {
     }, 1000);
   };
 
-  const handleAttachFile = () => {
-    //
-  };
-
-  const handleMicrophoneClick = () => {
-    //
-  };
-
   return (
-    <div className="h-[400px] border bg-background rounded-lg flex flex-col">
+    <div className="h-[600px] border bg-background rounded-lg flex flex-col">
       <div className="flex-1 overflow-hidden">
         <ChatMessageList>
           {messages.map((message) => (
@@ -120,25 +113,7 @@ export function Chat() {
             className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
           />
           <div className="flex items-center p-3 pt-0 justify-between">
-            <div className="flex">
-              <Button
-                variant="ghost"
-                size="icon"
-                type="button"
-                onClick={handleAttachFile}
-              >
-                <Paperclip className="size-4" />
-              </Button>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                type="button"
-                onClick={handleMicrophoneClick}
-              >
-                <Mic className="size-4" />
-              </Button>
-            </div>
             <Button type="submit" size="sm" className="ml-auto gap-1.5">
               Send Message
               <CornerDownLeft className="size-3.5" />

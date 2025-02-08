@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Chat } from "./Chat"
 
-const FormSchema = z.object({
+export const FormSchema = z.object({
     skill: z.string().min(2, {
         message: "Skill must be at least 2 characters.",
     }),
@@ -35,8 +35,8 @@ const FormSchema = z.object({
 })
 
 export function RoadmapForm() {
-    const [isLoading, setIsLoading] = useState<Boolean>();
-    const [data, setData] = useState<z.infer<typeof FormSchema>>();
+    const [isLoading, setIsLoading] = useState<Boolean>(false);
+    const [data, setData] = useState<z.infer<typeof FormSchema> | null>(null);
     const { toast } = useToast();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -63,78 +63,83 @@ export function RoadmapForm() {
     }
 
     return (
-        <div className="w-[500px] flex justify-center border-primary-foreground border rounded-md p-4">
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-                    <FormField
-                        control={form.control}
-                        name="skill"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Skill</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Prompt Engineering" {...field} />
-                                </FormControl>
-                                <FormDescription>
-                                    Enter the Skill you want to learn
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
+        <div>
+            {data === null && (
+                <div className="w-[500px] flex justify-center border rounded-md p-4 bg-card">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+                            <FormField
+                                control={form.control}
+                                name="skill"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Skill</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Prompt Engineering" {...field} />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Enter the Skill you want to learn
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="skillLevel"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Level</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="basic" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="basic">Basic</SelectItem>
+                                                <SelectItem value="intermidate">Intermidate</SelectItem>
+                                                <SelectItem value="advanced">Advanced</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription>
+                                            What level do you hope to obtain (High level = more time needed)
+                                        </FormDescription>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="time"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Time</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="1 Week" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="oneWeek">1 Week</SelectItem>
+                                                <SelectItem value="oneMonth">1 Month</SelectItem>
+                                                <SelectItem value="sixMonths">6 Months</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription>
+                                            How long do you want to take to learn this skill?
+                                        </FormDescription>
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit">Submit</Button>
+                        </form>
+                    </Form>
 
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="skillLevel"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Level</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="basic" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="basic">Basic</SelectItem>
-                                        <SelectItem value="intermidate">Intermidate</SelectItem>
-                                        <SelectItem value="advanced">Advanced</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <FormDescription>
-                                    What level do you hope to obtain (High level = more time needed)
-                                </FormDescription>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="time"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Time</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="1 Week" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="oneWeek">1 Week</SelectItem>
-                                        <SelectItem value="oneMonth">1 Month</SelectItem>
-                                        <SelectItem value="sixMonths">6 Months</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <FormDescription>
-                                    How long do you want to take to learn this skill?
-                                </FormDescription>
-                            </FormItem>
-                        )}
-                    />
-                    <Button type="submit">Submit</Button>
-                </form>
-            </Form>
-            {!isLoading && data && <Chat/>}
+
+                </div>
+            )}
+            {!isLoading && data && <Chat formData={data} />}
         </div>
     )
 }
