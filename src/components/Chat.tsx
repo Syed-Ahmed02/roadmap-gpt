@@ -11,58 +11,17 @@ import {
 } from "@/components/ui/chat-bubble";
 import { ChatMessageList } from "@/components/ui/chat-message-list";
 import { ChatInput } from "@/components/ui/chat-input";
+import {useChat} from "@ai-sdk/react"
 
 
 
 export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
-    const [messages, setMessages] = useState([
-    {
-      id: 1,
-      content: "Hello! How can I help you today?",
-      sender: "ai",
-    },
-    {
-      id: 2,
-      content: "I have a question about the component library.",
-      sender: "user",
-    },
-    {
-      id: 3,
-      content: "Sure! I'd be happy to help. What would you like to know?",
-      sender: "ai",
-    },
-  ]);
+  const { messages, input, handleInputChange, handleSubmit, error } = useChat();
 
-  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: prev.length + 1,
-        content: input,
-        sender: "user",
-      },
-    ]);
-    setInput("");
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: prev.length + 1,
-          content: "This is an AI response to your message.",
-          sender: "ai",
-        },
-      ]);
-      setIsLoading(false);
-    }, 1000);
-  };
+  
 
   return (
     <div className="h-[600px] border bg-background rounded-lg flex flex-col">
@@ -71,19 +30,19 @@ export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
           {messages.map((message) => (
             <ChatBubble
               key={message.id}
-              variant={message.sender === "user" ? "sent" : "received"}
+              variant={message.role === "user" ? "sent" : "received"}
             >
               <ChatBubbleAvatar
                 className="h-8 w-8 shrink-0"
                 src={
-                  message.sender === "user"
+                  message.role === "user"
                     ? `https://avatar.iran.liara.run/public/30`
                     : `https://avatar.iran.liara.run/public/10`
                 }
-                fallback={message.sender === "user" ? "US" : "AI"}
+                fallback={message.role === "user" ? "US" : "AI"}
               />
               <ChatBubbleMessage
-                variant={message.sender === "user" ? "sent" : "received"}
+                variant={message.role === "user" ? "sent" : "received"}
               >
                 {message.content}
               </ChatBubbleMessage>
@@ -110,7 +69,7 @@ export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
         >
           <ChatInput
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
             placeholder="Type your message..."
             className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
           />

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ai-sdk/deepseek": "^0.1.8",
+    "@ai-sdk/openai": "^1.1.9",
+    "@ai-sdk/react": "^1.1.11",
     "@hookform/resolvers": "^3.10.0",
     "@pinecone-database/pinecone": "^4.1.0",
     "@radix-ui/react-avatar": "^1.1.3",

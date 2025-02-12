@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
+import { generatePromptEmbedding, getEmbeddingMetadata } from "@/utils/apiCalls"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
@@ -47,8 +47,24 @@ export function RoadmapForm() {
         },
     })
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
+    async function onSubmit(data: z.infer<typeof FormSchema>) {
         setIsLoading(true);
+        const embedingPrompt = "I want to learn " + data.skill + " at a " + data.skillLevel + " level in " + data.time;
+        const prompt = "Generate me a roadmap to learn " + data.skill + " at a " + data.skillLevel + " level in " + data.time + "using the resources provided, the roadmap should be easy to follow and should be able to be completed in the given time frame";
+        const { embedding } = await generatePromptEmbedding(embedingPrompt);
+        if (embedding) {
+            const metadata = await getEmbeddingMetadata(embedding);
+            console.log(metadata);
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ prompt }),
+            });
+            console.log("DEEPSEEK RES",response);
+        }
+
         toast({
             title: "You submitted the following values:",
             description: (
