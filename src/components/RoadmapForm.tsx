@@ -55,14 +55,7 @@ export function RoadmapForm() {
         if (embedding) {
             const metadata = await getEmbeddingMetadata(embedding);
             console.log(metadata);
-            const response = await fetch("/api/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ prompt }),
-            });
-            console.log("DEEPSEEK RES",response);
+
         }
 
         toast({
