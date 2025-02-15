@@ -13,11 +13,11 @@ export async function POST(req: Request) {
 
   const queryResponse = await index.query({
     vector: queryVector,
-    topK: 1,
+    topK: 5,
     includeMetadata: true,
   })
 
-  const metadata = queryResponse?.matches?.[0]?.metadata
+  const metadata = queryResponse.matches?.map(match => match.metadata) || []
   return NextResponse.json({ metadata })
 }
 
