@@ -7,6 +7,7 @@ import { generatePromptEmbedding, getEmbeddingMetadata } from "@/utils/apiCalls"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import {
     Form,
     FormControl,
@@ -25,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Chat } from "./Chat"
-
+import { useRouter } from "next/navigation"
 export const FormSchema = z.object({
     skill: z.string().min(2, {
         message: "Skill must be at least 2 characters.",
@@ -35,8 +36,9 @@ export const FormSchema = z.object({
 })
 
 export function RoadmapForm() {
-    const [isLoading, setIsLoading] = useState<Boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [data, setData] = useState<z.infer<typeof FormSchema> | null>(null);
+    const router = useRouter();
     const { toast } = useToast();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -49,13 +51,6 @@ export function RoadmapForm() {
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         setIsLoading(true);
-        const embedingPrompt = "I want to learn " + data.skill + " at a " + data.skillLevel + " level in " + data.time;
-        const prompt = "Generate me a roadmap to learn " + data.skill + " at a " + data.skillLevel + " level in " + data.time + "using the resources provided, the roadmap should be easy to follow and should be able to be completed in the given time frame";
-        const { embedding } = await generatePromptEmbedding(embedingPrompt);
-        if (embedding) {
-            const metadata = await getEmbeddingMetadata(embedding);
-
-        }
 
         toast({
             title: "You submitted the following values:",
@@ -66,13 +61,22 @@ export function RoadmapForm() {
             ),
         })
         setData(data);
+
         setIsLoading(false);
 
     }
 
     return (
-        <div>
+        <div className="flex flex-col items-center justify-center space-y-4">
             {data === null && (
+                <div className="m-16 text-center space-y-4">
+                    <h2 className="text-xl md:text-2xl font-medium text-secondary-foreground ">Learn your next skill for free</h2>
+                    <h1 className="text-2xl md:text-4xl  text-primary-foreground font-bold">With our AI Powered Roadmaps</h1>
+                    <h2 className="text-xl md:text-2xl font-medium">Get Started today for free below</h2>
+                </div>
+            )}
+            {data === null && (
+
                 <div className="w-[500px] flex justify-center border rounded-md p-4 bg-card">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
@@ -140,7 +144,9 @@ export function RoadmapForm() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit" disabled={isLoading}>
+                                Submit
+                            </Button>
                         </form>
                     </Form>
 

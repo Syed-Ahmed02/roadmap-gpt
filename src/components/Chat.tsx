@@ -67,7 +67,7 @@ export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
     }
   }
   return (
-    <div className="h-[600px] border bg-background rounded-lg flex flex-col w-full min-w-[320px] md:min-w-full max-w-4xl mx-auto">
+    <div className="h-[600px] border bg-background rounded-lg flex flex-col w-full min-w-[320px] md:min-w-full max-w-4xl mx-auto my-16">
       <div className="flex-1 overflow-hidden ">
         <ChatMessageList>
           {messages.map((message) => (
