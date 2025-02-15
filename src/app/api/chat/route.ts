@@ -4,23 +4,19 @@ import { Pinecone } from "@pinecone-database/pinecone"
 import { openai } from "@ai-sdk/openai"
 import { embed } from "ai"
 
-export const runtime = "nodejs"
 
 export async function POST(req: Request) {
   const { messages } = await req.json()
   const userMessage = messages[messages.length - 1].content
 
-  // 1. Generate embedding for the user's query
   const { embedding } = await embed({
     model: openai.embedding("text-embedding-3-small"),
     value: userMessage,
   })
 
-  // 2. Query Pinecone for relevant context
   const pinecone = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY as string,
   })
-  console.log("embedding", embedding)
   const index = pinecone.index("roadmap-gpt")
   const queryResponse = await index.query({
     vector: embedding,
@@ -28,7 +24,6 @@ export async function POST(req: Request) {
     includeMetadata: true,
   })
   const relevantContexts = queryResponse.matches?.map(match => match.metadata) || []
-console.log(relevantContexts)
 
 // Format the relevant contexts
 const formattedContexts = relevantContexts.length > 0
@@ -47,7 +42,6 @@ const augmentedPrompt = `
 
   Based on the above context and the user's query, provide a detailed response.
 `
-console.log(augmentedPrompt)
   const result = streamText({
     model: deepseek("deepseek-chat"),
     prompt: augmentedPrompt,
