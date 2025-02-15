@@ -1,5 +1,5 @@
 export const generatePromptEmbedding = async (prompt: string) => {
-    const response = await fetch("/api/openai-embeddings", {
+    const response = await fetch("/api/embed", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,7 +17,7 @@ export const generatePromptEmbedding = async (prompt: string) => {
   };
   
   export const getEmbeddingMetadata = async (queryVector: Array<number>) => {
-    const response = await fetch("/api/pinecone-embeddings", {
+    const response = await fetch("/api/query", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

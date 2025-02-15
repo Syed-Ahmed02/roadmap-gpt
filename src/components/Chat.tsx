@@ -8,6 +8,10 @@ import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "@/components/ui
 import { ChatMessageList } from "@/components/ui/chat-message-list"
 import { ChatInput } from "@/components/ui/chat-input"
 import { useChat } from "ai/react"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from 'remark-gfm'
+import StyledMarkdown from "./StyledMarkdown"
+
 
 export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
   const initialPrompt = `Generate a roadmap to learn ${formData.skill} at a ${formData.skillLevel} level in ${formData.time}. The roadmap should be easy to follow and should be able to be completed in the given time frame.`
@@ -20,17 +24,14 @@ export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
         role: "assistant",
         content: "Hello! I'll help you create a learning roadmap. What would you like to learn?",
       },
-      {
-        id: "2",
-        role: "user",
-        content: initialPrompt,
-      },
+
     ],
+    initialInput: initialPrompt,
   })
 
   return (
-    <div className="h-[600px] border bg-background rounded-lg flex flex-col">
-      <div className="flex-1 overflow-hidden">
+    <div className="h-[600px] border bg-background rounded-lg flex flex-col w-full min-w-[320px] md:min-w-full max-w-4xl mx-auto">
+      <div className="flex-1 overflow-hidden ">
         <ChatMessageList>
           {messages.map((message) => (
             <ChatBubble key={message.id} variant={message.role === "user" ? "sent" : "received"}>
@@ -44,7 +45,7 @@ export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
                 fallback={message.role === "user" ? "US" : "AI"}
               />
               <ChatBubbleMessage variant={message.role === "user" ? "sent" : "received"}>
-                {message.content}
+                <StyledMarkdown content={message.content} />
               </ChatBubbleMessage>
             </ChatBubble>
           ))}
@@ -62,7 +63,7 @@ export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
         </ChatMessageList>
       </div>
 
-      <div className="p-4 border-t">
+      <div className="p-4 border-t ">
         <form
           onSubmit={handleSubmit}
           className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
@@ -84,4 +85,3 @@ export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
     </div>
   )
 }
-

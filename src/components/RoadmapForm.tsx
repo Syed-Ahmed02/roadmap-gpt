@@ -31,7 +31,7 @@ export const FormSchema = z.object({
         message: "Skill must be at least 2 characters.",
     }),
     skillLevel: z.enum(["basic", "intermidate", "advanced"]),
-    time: z.enum(["oneWeek", "oneMonth", "sixMonths"]),
+    time: z.enum(["one month", "three months", "six months"]),
 })
 
 export function RoadmapForm() {
@@ -43,7 +43,7 @@ export function RoadmapForm() {
         defaultValues: {
             skill: "",
             skillLevel: "basic",
-            time: "oneWeek"
+            time: "one month"
         },
     })
 
@@ -54,7 +54,6 @@ export function RoadmapForm() {
         const { embedding } = await generatePromptEmbedding(embedingPrompt);
         if (embedding) {
             const metadata = await getEmbeddingMetadata(embedding);
-            console.log(metadata);
 
         }
 
@@ -126,13 +125,13 @@ export function RoadmapForm() {
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="1 Week" />
+                                                    <SelectValue placeholder="1 month" />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="oneWeek">1 Week</SelectItem>
-                                                <SelectItem value="oneMonth">1 Month</SelectItem>
-                                                <SelectItem value="sixMonths">6 Months</SelectItem>
+                                                <SelectItem value="one month">1 Month</SelectItem>
+                                                <SelectItem value="three months">3 Months</SelectItem>
+                                                <SelectItem value="six months">6 Months</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormDescription>
@@ -148,7 +147,9 @@ export function RoadmapForm() {
 
                 </div>
             )}
-            {!isLoading && data && <Chat formData={data} />}
+            <div className="flex flex-col items-center justify-center">
+                {!isLoading && data && <Chat formData={data} />}
+            </div>
         </div>
     )
 }
