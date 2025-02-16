@@ -10,10 +10,11 @@ import { useChat } from "ai/react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from 'remark-gfm'
 import StyledMarkdown from "./StyledMarkdown"
-
+type ChatProps = {
+  initialPrompt: string;
+}
 import { generatePromptEmbedding, getEmbeddingMetadata } from "@/utils/apiCalls"
-export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
-  const initialPrompt = `Generate a roadmap to learn ${formData.skill} at a ${formData.skillLevel} level in ${formData.time}. The roadmap should be easy to follow and should be able to be completed in the given time frame.`
+export function Chat({initialPrompt}: ChatProps) {
 
   const { messages, input, handleInputChange, handleSubmit: originalHandleSubmit, isLoading } = useChat({
     api: "/api/chat",
@@ -67,7 +68,7 @@ export function Chat({ formData }: { formData: z.infer<typeof FormSchema> }) {
     }
   }
   return (
-    <div className="h-[600px] border bg-background rounded-lg flex flex-col w-full min-w-[320px] md:min-w-full max-w-4xl mx-auto my-16">
+    <div className=" border bg-background rounded-lg flex flex-col w-full min-w-[320px] md:min-w-full max-w-4xl mx-auto my-16 pr-16">
       <div className="flex-1 overflow-hidden ">
         <ChatMessageList>
           {messages.map((message) => (

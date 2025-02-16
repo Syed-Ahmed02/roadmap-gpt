@@ -6,7 +6,9 @@ import { z } from "zod"
 import { generatePromptEmbedding, getEmbeddingMetadata } from "@/utils/apiCalls"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
+import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
+import { useEffect } from "react"
 import Link from "next/link"
 import {
     Form,
@@ -26,7 +28,6 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Chat } from "./Chat"
-import { useRouter } from "next/navigation"
 export const FormSchema = z.object({
     skill: z.string().min(2, {
         message: "Skill must be at least 2 characters.",
@@ -48,7 +49,11 @@ export function RoadmapForm() {
             time: "one month"
         },
     })
-
+    useEffect(() => {
+        if (!isLoading && data) {
+            router.push("/chat?skill=" + data.skill + "&skillLevel=" + data.skillLevel + "&time=" + data.time);
+        }
+    }, [isLoading, data])
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         setIsLoading(true);
 
@@ -153,9 +158,7 @@ export function RoadmapForm() {
 
                 </div>
             )}
-            <div className="flex flex-col items-center justify-center">
-                {!isLoading && data && <Chat formData={data} />}
-            </div>
+
         </div>
     )
 }
