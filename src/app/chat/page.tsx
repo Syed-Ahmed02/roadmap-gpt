@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation"
 import React, { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import { LayoutDashboard, UserCog, Settings, LogOut } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -52,7 +53,7 @@ export default function ChatPage() {
         <div
             className={cn(
                 "rounded-md flex flex-col md:flex-row  w-full flex-1 mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
-                "h-screen" 
+                "h-screen"
             )}
         >
             <Sidebar open={open} setOpen={setOpen}>
@@ -66,26 +67,17 @@ export default function ChatPage() {
                         </div>
                     </div>
                     <div>
-                        <SidebarLink
-                            link={{
-                                label: "Manu Arora",
-                                href: "#",
-                                icon: (
-                                    <Image
-                                        src="https://assets.aceternity.com/manu.png"
-                                        className="h-7 w-7 flex-shrink-0 rounded-full"
-                                        width={50}
-                                        height={50}
-                                        alt="Avatar"
-                                    />
-                                ),
-                            }}
-                        />
-                    </div> 
+                        <SignedOut>
+                            <SignInButton />
+                        </SignedOut>
+                        <SignedIn>
+                            <UserButton />
+                        </SignedIn>
+                    </div>
                 </SidebarBody>
             </Sidebar>
             <Chat initialPrompt={initialPrompt} />
-        </div>
+        </div >
     );
 }
 

@@ -119,3 +119,19 @@ export function ChatBubbleActionWrapper({
     </div>
   )
 }
+
+ const ChatHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
+  className,
+  ...props
+}) => (
+  <div
+    className={cn("flex items-center justify-between p-4 border-b", className)}
+    {...props}
+  />
+);
+
+ChatHeader.displayName = "ChatHeader";
+
+export {
+  ChatHeader,
+};

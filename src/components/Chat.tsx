@@ -1,14 +1,12 @@
 "use client"
-import type { FormSchema } from "./RoadmapForm"
-import type { z } from "zod"
+
 import { CornerDownLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "@/components/ui/chat-bubble"
 import { ChatMessageList } from "@/components/ui/chat-message-list"
 import { ChatInput } from "@/components/ui/chat-input"
 import { useChat } from "ai/react"
-import ReactMarkdown from "react-markdown"
-import remarkGfm from 'remark-gfm'
+import { ChatHeader } from "@/components/ui/chat-bubble"
 import StyledMarkdown from "./StyledMarkdown"
 type ChatProps = {
   initialPrompt: string;
@@ -68,8 +66,12 @@ export function Chat({initialPrompt}: ChatProps) {
     }
   }
   return (
-    <div className=" border bg-background rounded-lg flex flex-col w-full min-w-[320px] md:min-w-full max-w-4xl mx-auto my-16 pr-16">
+    <div className=" border bg-background flex flex-col w-full min-w-[320px] md:min-w-full max-w-4xl mx-auto pr-16 h-screen">
       <div className="flex-1 overflow-hidden ">
+        <ChatHeader className="flex flex-col text-center justify-center">
+          <h1 className="text-xl font-semibold">Roadmap GPT</h1>
+          <p className="text-md text-primary-foreground"> Ask me how to learn any skill for free</p>
+        </ChatHeader>
         <ChatMessageList>
           {messages.map((message) => (
             <ChatBubble key={message.id} variant={message.role === "user" ? "sent" : "received"}>
