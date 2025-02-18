@@ -66,7 +66,7 @@ export function Chat({initialPrompt}: ChatProps) {
     }
   }
   return (
-    <div className=" border bg-background flex flex-col w-full min-w-[320px] md:min-w-full max-w-4xl mx-auto pr-16 h-screen">
+    <div className=" border bg-background flex flex-col w-full mx-auto h-screen">
       <div className="flex-1 overflow-hidden ">
         <ChatHeader className="flex flex-col text-center justify-center">
           <h1 className="text-xl font-semibold">Roadmap GPT</h1>
@@ -110,7 +110,7 @@ export function Chat({initialPrompt}: ChatProps) {
             value={input}
             onChange={handleInputChange}
             placeholder="Type your message..."
-            className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
+            className="resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
           />
           <div className="flex items-center p-3 pt-0 justify-between">
             <Button
