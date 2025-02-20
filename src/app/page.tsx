@@ -1,4 +1,4 @@
-import { BlurHeader } from "@/components/header";
+import { BlurHeader } from "@/components/Header";
 import { RoadmapForm } from "@/components/RoadmapForm";
 import { ModeToggle } from "@/components/ui/darkmode";
 import { HeroPill } from "@/components/ui/hero-pill";
