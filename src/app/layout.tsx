@@ -1,3 +1,5 @@
+import { BlurHeader } from "@/components/sections/Header";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -24,7 +26,6 @@ export const metadata: Metadata = {
   title: "Roadmap GPT",
   description: "Learn your next skill with Ai for free",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,6 +43,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <BlurHeader />
+
             {children}
           </ThemeProvider>
           <Toaster />

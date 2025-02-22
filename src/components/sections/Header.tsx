@@ -1,4 +1,4 @@
-import { ModeToggle } from "./ui/darkmode";
+import { ModeToggle } from "../ui/darkmode";
 
 export function BlurHeader() {
     return (
