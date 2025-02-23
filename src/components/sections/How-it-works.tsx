@@ -12,7 +12,7 @@ import { motion, useInView } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-
+import Link from "next/link";
 type AccordionItemProps = {
     children: React.ReactNode;
     className?: string;
@@ -205,14 +205,14 @@ const Feature = ({
 
     return (
         <section ref={ref} id="features">
-            <div className="py-14">
+            <div className="">
                 <div className="container flex w-full flex-col items-center justify-center p-4">
                     <div className="mx-auto max-w-5xl text-center">
                         <h4 className="text-xl font-bold tracking-tight text-black dark:text-white">
-                            How It Works
+                            Our Solution
                         </h4>
                         <h2 className="text-4xl font-bold tracking-tight text-black dark:text-white sm:text-6xl">
-                            Ridiculously Simple Process
+                            It's a Ridiculously Simple Process
                         </h2>
                     </div>
                     <div className="mx-auto my-12 grid h-full max-w-6xl grid-cols-5 gap-x-10">
@@ -255,7 +255,7 @@ const Feature = ({
                                         <AccordionTrigger className="text-xl font-bold">
                                             {item.title}
                                         </AccordionTrigger>
-                                        <AccordionContent>{item.content}</AccordionContent>
+                                        <AccordionContent className="text-muted-foreground">{item.content}</AccordionContent>
                                     </AccordionItem>
                                 ))}
                             </Accordion.Root>
@@ -316,7 +316,7 @@ const Feature = ({
                                         ></div>
                                     </div>
                                     <h2 className="text-xl font-bold">{item.title}</h2>
-                                    <p className="mx-0 max-w-sm text-balance text-sm">
+                                    <p className="mx-0 max-w-sm text-balance text-muted-foreground  text-sm">
                                         {item.content}
                                     </p>
                                 </a>
@@ -331,11 +331,13 @@ const Feature = ({
 
 export function FeatureSection() {
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center my-16">
             <div className="flex justify-center">
                 <Feature collapseDelay={5000} linePosition="left" />
             </div>
-            <Button variant={"outline"} className="font-bold">Create My Roadmap Instantly</Button>
+            <Link href="#form">
+                <Button variant={"outline"} className="font-bold">Create My Roadmap Instantly</Button>
+            </Link>
         </div>
     );
 }

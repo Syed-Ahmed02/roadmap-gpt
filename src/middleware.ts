@@ -1,4 +1,4 @@
-import { ClerkMiddlewareAuth, clerkMiddleware } from '@clerk/nextjs/server';
+import { ClerkMiddlewareAuth, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { NextRequest, NextResponse } from "next/server";
@@ -14,24 +14,29 @@ const ratelimit = new Ratelimit({
   ephemeralCache: new Map(),
   analytics: true,
 });
-
+const isProtectedRoute = createRouteMatcher(['/chat(.*)'])
 const isAPI = (path: string) => {
   return path.startsWith('/api/') || path.startsWith('/app/api/');
 }
 
 export default clerkMiddleware(async (auth: ClerkMiddlewareAuth, request: NextRequest) => {
-  if (isAPI(request.nextUrl.pathname)) {
-    const { userId } = await auth();
-    const { success, limit, reset, remaining } = await ratelimit.limit(`${userId}`);
 
+
+  if (isAPI(request.nextUrl.pathname)) {
+    const { userId, redirectToSignIn } = await auth();
+    const { success, limit, reset, remaining } = await ratelimit.limit(`${userId}`);
+    if (!userId && isProtectedRoute(request)) {
+  
+      return redirectToSignIn()
+    }
     const res = success ?
-     NextResponse.next()
-     : NextResponse.json({ errorMessage: 'Rate limit exceeded. Please try again later.' }, { status: 429 });
+      NextResponse.next()
+      : NextResponse.json({ errorMessage: 'Rate limit exceeded. Please try again later.' }, { status: 429 });
 
     res.headers.set("X-RateLimit-Limit", limit.toString());
     res.headers.set("X-RateLimit-Remaining", remaining.toString());
     res.headers.set("X-RateLimit-Reset", reset.toString());
-      
+
     if (!success) return res;
     return res;
   }
