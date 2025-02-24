@@ -6,10 +6,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import {
   ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
 } from '@clerk/nextjs'
 import { ThemeProvider } from "@/components/themeprovider";
 const geistSans = Geist({

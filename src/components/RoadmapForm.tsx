@@ -28,12 +28,16 @@ import {
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Chat } from "./Chat"
+
 export const FormSchema = z.object({
     skill: z.string().min(2, {
         message: "Skill must be at least 2 characters.",
     }),
-    skillLevel: z.enum(["basic", "intermidate", "advanced"]),
-    time: z.enum(["one month", "three months", "six months"]),
+    skillLevel: z.enum(["basic", "intermediate", "advanced"]),
+    time: z.enum(["lessFive", "fiveToTen", "tenToTwenty", "twentyPlus"]),
+    currentLevel: z.string().min(2, {
+        message: "Current experience must be at least 2 characters.",
+    }),
 })
 
 export function RoadmapForm() {
@@ -46,12 +50,13 @@ export function RoadmapForm() {
         defaultValues: {
             skill: "",
             skillLevel: "basic",
-            time: "one month"
+            time: "lessFive",
+            currentLevel: ""
         },
     })
     useEffect(() => {
         if (!isLoading && data) {
-            router.push("/chat?skill=" + data.skill + "&skillLevel=" + data.skillLevel + "&time=" + data.time);
+            router.push("/chat?skill=" + data.skill + "&skillLevel=" + data.skillLevel + "&time=" + data.time + "&currentLevel=" + data.currentLevel);
         }
     }, [isLoading, data])
     async function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -73,12 +78,12 @@ export function RoadmapForm() {
 
     return (
         <div className="flex flex-col items-center justify-center space-y-4 mx-4">
-           
+
             {data === null && (
 
-                <div className=" w-fit md:w-[500px] flex justify-center border rounded-md p-4 bg-card ">
+                <div className=" w-fit md:max-w-4xl md:w-full flex justify-center  rounded-md p-4 bg-card border border-primary-foreground ">
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className=" w-11/12 space-y-6">
                             <FormField
                                 control={form.control}
                                 name="skill"
@@ -86,7 +91,7 @@ export function RoadmapForm() {
                                     <FormItem>
                                         <FormLabel>Skill</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Prompt Engineering" {...field} />
+                                            <Input placeholder="Data Science" {...field} />
                                         </FormControl>
                                         <FormDescription>
                                             Enter the Skill you want to learn
@@ -109,7 +114,7 @@ export function RoadmapForm() {
                                             </FormControl>
                                             <SelectContent>
                                                 <SelectItem value="basic">Basic</SelectItem>
-                                                <SelectItem value="intermidate">Intermidate</SelectItem>
+                                                <SelectItem value="intermediate">Intermediate</SelectItem>
                                                 <SelectItem value="advanced">Advanced</SelectItem>
                                             </SelectContent>
                                         </Select>
@@ -132,14 +137,31 @@ export function RoadmapForm() {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                <SelectItem value="one month">1 Month</SelectItem>
-                                                <SelectItem value="three months">3 Months</SelectItem>
-                                                <SelectItem value="six months">6 Months</SelectItem>
+                                                <SelectItem value="lessFive">less than 5 hours</SelectItem>
+                                                <SelectItem value="fiveToTen">5 - 10 hours</SelectItem>
+                                                <SelectItem value="tenToTwenty">10 - 20 hours</SelectItem>
+                                                <SelectItem value="twentyPlus">20+ hours</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormDescription>
-                                            How long do you want to take to learn this skill?
+                                            How much time per week can you give?
                                         </FormDescription>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="currentLevel"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Current Experience</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="I know basic python skills" {...field} />
+                                        </FormControl>
+                                        <FormDescription>
+                                            How much do you already know
+                                        </FormDescription>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
@@ -148,11 +170,8 @@ export function RoadmapForm() {
                             </Button>
                         </form>
                     </Form>
-
-
                 </div>
             )}
-
         </div>
     )
 }

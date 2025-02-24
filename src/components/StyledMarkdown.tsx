@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -18,7 +19,7 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
           </pre>
         ),
         p: ({ children }) => (
-          <p className="whitespace-pre-line text-black dark:text-white">
+          <p className="whitespace-pre-line text-black dark:text-primary-foreground">
             {children}
           </p>
         ),
@@ -26,12 +27,13 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
           <hr className="border-black dark:border-white my-4" />
         ),
         a: ({ children, href }) => (
-          <a 
-            href={href}
+          <Link
+            href={href!}
+            target="_blank"
             className="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300"
           >
             {children}
-          </a>
+          </Link>
         )
         
       }}

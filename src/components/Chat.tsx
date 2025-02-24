@@ -6,15 +6,16 @@ import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "@/components/ui
 import { ChatMessageList } from "@/components/ui/chat-message-list"
 import { ChatInput } from "@/components/ui/chat-input"
 import { useChat } from "ai/react"
-import { ChatHeader } from "@/components/ui/chat-bubble"
+import { useState } from "react"
 import StyledMarkdown from "./StyledMarkdown"
 type ChatProps = {
   initialPrompt: string;
 }
 import { generatePromptEmbedding, getEmbeddingMetadata } from "@/utils/apiCalls"
 export function Chat({initialPrompt}: ChatProps) {
+  const [isLoading,setIsLoading] = useState(Boolean)
 
-  const { messages, input, handleInputChange, handleSubmit: originalHandleSubmit, isLoading } = useChat({
+  const { messages, input, handleInputChange, handleSubmit: originalHandleSubmit } = useChat({
     api: "/api/chat",
     initialMessages: [
       {
@@ -28,6 +29,7 @@ export function Chat({initialPrompt}: ChatProps) {
 
   const handleEnhancedSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsLoading(true)
 
     if (input.trim().length === 0) {
       return
@@ -64,15 +66,13 @@ export function Chat({initialPrompt}: ChatProps) {
     } catch (error) {
       console.error('Error sending message:', error)
     }
+    setIsLoading(false)
   }
   return (
     <div className=" border bg-background flex flex-col w-full mx-auto h-screen">
       <div className="flex-1 overflow-hidden ">
-        <ChatHeader className="flex flex-col text-center justify-center">
-          <h1 className="text-xl font-semibold">Roadmap GPT</h1>
-          <p className="text-md text-primary-foreground"> Ask me how to learn any skill for free</p>
-        </ChatHeader>
-        <ChatMessageList>
+        
+        <ChatMessageList smooth={true}  >
           {messages.map((message) => (
             <ChatBubble key={message.id} variant={message.role === "user" ? "sent" : "received"}>
               <ChatBubbleAvatar

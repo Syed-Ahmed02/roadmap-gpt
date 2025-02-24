@@ -4,22 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
 export default function Contributors() {
 
-    const contributorsList = [
-        'https://github.com/codecrafters-io/build-your-own-x', 'https://github.com/practical-tutorials/project-based-learning',
-        'https://github.com/josephmisiti/awesome-machine-learning', 'https://github.com/anthropics/courses',
-        'https://github.com/lorinpop17/app-ideas', 'https://github.com/charlax/professional-programming',
-        'https://github.com/aishwaryanr/awesome-generative-ai-guide', 'https://github.com/liuchong/awesome-roadmaps',
-        'https://github.com/detailyang/awesome-cheatsheet', 'https://github.com/cloudcommunity/Free-Certifications',
-        'https://github.com/ChristosChristofidis/awesome-deep-learning', 'https://github.com/docker/awesome-compose',
-        'https://github.com/academic/awesome-datascience', 'https://github.com/freeCodeCamp/freeCodeCamp',
-        'https://github.com/EbookFoundation/free-programming-books', 'https://github.com/A-to-Z-Resources-for-Students',
-        'https://github.com/Hack-with-Github/Awesome-Hacking', 'https://github.com/prakhar1989/awesome-courses',
-        'https://github.com/trimstray/the-book-of-secret-knowledge', 'https://github.com/brexhq/prompt-engineering',
-        'https://github.com/mlabonne/llm-course', 'https://github.com/sindresorhus/awesome', 'https://github.com/MunGell/awesome-for-beginners',
-        'https://github.com/kamranahmedse/developer-roadmap', 'https://github.com/bradtraversy/50projects50days',
-        'https://github.com/mtdvio/every-programmer-should-know', 'https://github.com/shahednasser/awesome-resources',
-        'https://github.com/microsoft/Data-Science-For-Beginners', 'https://github.com/natnew/Awesome-Data-Science',
-        'https://github.com/goabstract/Marketing-for-Engineers']
+    const contributorsList = ['https://github.com/codecrafters-io/build-your-own-x', 'https://github.com/practical-tutorials/project-based-learning', 'https://github.com/josephmisiti/awesome-machine-learning', 'https://github.com/anthropics/courses', 'https://github.com/florinpop17/app-ideas', 'https://github.com/charlax/professional-programming', 'https://github.com/aishwaryanr/awesome-generative-ai-guide', 'https://github.com/liuchong/awesome-roadmaps', 'https://github.com/detailyang/awesome-cheatsheet', 'https://github.com/cloudcommunity/Free-Certifications', 'https://github.com/ChristosChristofidis/awesome-deep-learning', 'https://github.com/docker/awesome-compose', 'https://github.com/academic/awesome-datascience', 'https://github.com/freeCodeCamp/freeCodeCamp', 'https://github.com/A-to-Z-Resources-for-Students', 'https://github.com/Hack-with-Github/Awesome-Hacking', 'https://github.com/prakhar1989/awesome-courses', 'https://github.com/trimstray/the-book-of-secret-knowledge', 'https://github.com/brexhq/prompt-engineering', 'https://github.com/mlabonne/llm-course', 'https://github.com/sindresorhus/awesome', 'https://github.com/MunGell/awesome-for-beginners', 'https://github.com/bradtraversy/50projects50days', 'https://github.com/mtdvio/every-programmer-should-know', 'https://github.com/shahednasser/awesome-resources', 'https://github.com/microsoft/Data-Science-For-Beginners', 'https://github.com/natnew/Awesome-Data-Science', 'https://github.com/goabstract/Marketing-for-Engineers']
 
 
     return (

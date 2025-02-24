@@ -10,8 +10,18 @@ function ChatContent() {
   const skill = params.get("skill")
   const skillLevel = params.get("skillLevel")
   const time = params.get("time")
+  const currentLevel = params.get("currentLevel")
 
-  const initialPrompt = `Generate a roadmap to learn ${skill} at a ${skillLevel} level in ${time}. The roadmap should be easy to follow and should be able to be completed in the given time frame.`
+  const timeMapping: { [key: string]: string } = {
+    lessFive: "less than 5 hours",
+    fiveToTen: "five to ten hours",
+    tenToTwenty: "ten to twenty hours",
+    twentyPlus: "more than 20 hours"
+  }
+
+  const readableTime = timeMapping[time || ""] || time
+
+  const initialPrompt = `Create me a roadmap to learn ${skill} at a ${skillLevel} level. I only have ${readableTime} per week to learn. My current skills are ${currentLevel}. The roadmap should be easy to follow and should be able to be completed in the given time frame.`
 
   return <Chat initialPrompt={initialPrompt} />
 }
@@ -32,4 +42,3 @@ export default function ChatPage() {
     </div>
   )
 }
-

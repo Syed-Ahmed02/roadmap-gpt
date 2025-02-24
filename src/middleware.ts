@@ -14,21 +14,17 @@ const ratelimit = new Ratelimit({
   ephemeralCache: new Map(),
   analytics: true,
 });
-const isProtectedRoute = createRouteMatcher(['/chat(.*)'])
+const isProtectedRoute = createRouteMatcher(['/chat(.*)']);
 const isAPI = (path: string) => {
   return path.startsWith('/api/') || path.startsWith('/app/api/');
 }
 
 export default clerkMiddleware(async (auth: ClerkMiddlewareAuth, request: NextRequest) => {
-
+  const { userId } = await auth();
+  if (isProtectedRoute(request)) await auth.protect();
 
   if (isAPI(request.nextUrl.pathname)) {
-    const { userId, redirectToSignIn } = await auth();
     const { success, limit, reset, remaining } = await ratelimit.limit(`${userId}`);
-    if (!userId && isProtectedRoute(request)) {
-  
-      return redirectToSignIn()
-    }
     const res = success ?
       NextResponse.next()
       : NextResponse.json({ errorMessage: 'Rate limit exceeded. Please try again later.' }, { status: 429 });
