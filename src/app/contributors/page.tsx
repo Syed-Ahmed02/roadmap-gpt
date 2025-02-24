@@ -46,7 +46,7 @@ export default function Contributors() {
                                 <Link href={tag} key={tag} className="text-sm hover:bg-secondary-foreground hover:text-primary ease-linear duration-100 hover:border hover:rounded-md p-2 ">
                                     {tag}
                                 </Link>
-                                <Separator className="my-2" />
+                                <Separator className="my-2 bg-primary-foreground " />
                             </div>
                         ))}
                     </div>
