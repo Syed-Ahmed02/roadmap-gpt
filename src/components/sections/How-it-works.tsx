@@ -215,7 +215,7 @@ const Feature = ({
                             It's a Ridiculously Simple Process
                         </h2>
                     </div>
-                    <div className="mx-auto md:my-12 grid h-full max-w-6xl grid-cols-5 gap-x-10">
+                    <div className="mx-auto my-12 grid h-full max-w-6xl grid-cols-5 gap-x-10">
                         <div
                             className={`col-span-2 hidden md:flex ${ltr ? "md:order-2 md:justify-" : "justify-start"
                                 }`}
@@ -331,7 +331,7 @@ const Feature = ({
 
 export function FeatureSection() {
     return (
-        <div className="flex flex-col items-center my-0">
+        <div className="flex flex-col items-center my-16">
             <div className="flex justify-center">
                 <Feature collapseDelay={5000} linePosition="left" />
             </div>

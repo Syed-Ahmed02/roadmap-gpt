@@ -1,4 +1,4 @@
-import { deepseek } from "@ai-sdk/deepseek"
+import { anthropic } from '@ai-sdk/anthropic';
 import { streamText } from "ai"
 
 export const maxDuration = 60;
@@ -6,7 +6,7 @@ export const maxDuration = 60;
 export async function POST(req: Request) {
   const { augmentedPrompt } = await req.json()
   const result = streamText({
-    model: deepseek("deepseek-chat"),
+    model: anthropic("claude-3-7-sonnet-20250219"),
     prompt: augmentedPrompt,
     system:
       `You are a professional career advisor.
