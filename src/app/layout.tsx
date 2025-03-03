@@ -31,6 +31,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <GoogleTagManager gtmId="G-4LVE7YDYB8" />
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
@@ -42,7 +43,6 @@ export default function RootLayout({
           >
             <BlurHeader />
             {children}
-            <GoogleTagManager gtmId="G-4LVE7YDYB8"/>
           </ThemeProvider>
           <Toaster />
         </body>
