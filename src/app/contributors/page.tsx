@@ -19,7 +19,7 @@ export default function Contributors() {
 
                     <BlurFade delay={0.03} inView={true}>
                         <p className="text-md md:text-xl w-full ">
-                            Here is the list of reposotires we used
+                            Here is the list of repositories we used
                         </p>
                     </BlurFade>
                 </div>
