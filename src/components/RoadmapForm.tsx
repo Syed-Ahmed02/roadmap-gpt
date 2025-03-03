@@ -53,7 +53,7 @@ export function RoadmapForm() {
             time: "lessFive",
             currentLevel: ""
         },
-    })
+})
     useEffect(() => {
         if (!isLoading && data) {
             router.push("/chat?skill=" + data.skill + "&skillLevel=" + data.skillLevel + "&time=" + data.time + "&currentLevel=" + data.currentLevel);
@@ -63,12 +63,8 @@ export function RoadmapForm() {
         setIsLoading(true);
 
         toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
+            title: "Success!",
+           
         })
         setData(data);
 
