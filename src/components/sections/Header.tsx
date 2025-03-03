@@ -14,6 +14,9 @@ export function BlurHeader() {
         <a className="z-[10]" href="/">
           Roadmap GPT
         </a>
+        <a className="z-[10]" href="/contributors">
+          Contributors
+        </a>
         <div className="z-[10]">
           <SignedOut>
             <SignInButton />

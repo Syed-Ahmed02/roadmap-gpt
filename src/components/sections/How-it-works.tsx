@@ -90,7 +90,7 @@ const cardData: CardDataProps[] = [
         content:
             "Pick a skill, set your goal, and tell us how much time you have.",
         image:
-            "https://images.unsplash.com/photo-1720371300677-ba4838fa0678?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "/form.png",
     },
     {
         id: 2,
@@ -98,7 +98,7 @@ const cardData: CardDataProps[] = [
         content:
             "Our smart algorithm instantly builds a step-by-step roadmap using the best free GitHub resources.",
         image:
-            "https://images.unsplash.com/photo-1686170287433-c95faf6d3608?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
+            "/ai.png",
     },
     {
         id: 3,
@@ -106,7 +106,7 @@ const cardData: CardDataProps[] = [
         content:
             "Follow your personalized plan—no fluff, no wasted effort, just progress.",
         image:
-            "https://images.unsplash.com/photo-1720378042271-60aff1e1c538?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMHx8fGVufDB8fHx8fA%3D%3D",
+            "/learning.png",
     },
 
 ];
