@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button"
 import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "@/components/ui/chat-bubble"
 import { ChatMessageList } from "@/components/ui/chat-message-list"
 import { ChatInput } from "@/components/ui/chat-input"
-import { useChat } from "ai/react"
-import { useState } from "react"
+import { useChat } from "@ai-sdk/react"
+import { useEffect, useState } from "react"
 import StyledMarkdown from "./StyledMarkdown"
 type ChatProps = {
   initialPrompt: string;
@@ -15,7 +15,7 @@ import { generatePromptEmbedding, getEmbeddingMetadata } from "@/utils/apiCalls"
 export function Chat({initialPrompt}: ChatProps) {
   const [isLoading,setIsLoading] = useState(Boolean)
 
-  const { messages, input, handleInputChange, handleSubmit: originalHandleSubmit } = useChat({
+  const { messages, input, handleInputChange, handleSubmit: originalHandleSubmit,setInput } = useChat({
     api: "/api/chat",
     initialMessages: [
       {
@@ -24,50 +24,60 @@ export function Chat({initialPrompt}: ChatProps) {
         content: "Hello! I'll help you create a learning roadmap. What would you like to learn?",
       },
     ],
-    initialInput: initialPrompt,
+    initialInput:initialPrompt,
   })
-
-  const handleEnhancedSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const processPrompt = async (prompt: string) => {
+    if (prompt.trim().length === 0) return
+  
     setIsLoading(true)
-
-    if (input.trim().length === 0) {
-      return
-    }
-
+  
     try {
-      console.log('Submitting message:', input)
-
-      // Embedding and Pinecone indexing logic
-      const embedding = await generatePromptEmbedding(input);
+      console.log('Submitting message:', prompt)
+  
+      const embedding = await generatePromptEmbedding(prompt)
       if (!embedding.error) {
         const metadata = await getEmbeddingMetadata(embedding.embedding!)
-
+  
         const formattedContexts = metadata.length > 0
           ? metadata.map((context: { source: string; text: string }) => `
             Source: ${context?.source}
             Text: ${context?.text}
           `).join('\n')
           : "No relevant context found."
-
+  
         const augmentedPrompt = `
         Context from knowledge base:
         ${formattedContexts}
-
+  
         User query:
-        ${input}
-
+        ${prompt}
+  
         Based on the above context and the user's query, provide a detailed response.
-      `
-
-        // Send the processed data to the API endpoint
-        await originalHandleSubmit(e, { body: { augmentedPrompt } })
+        `
+  
+        await originalHandleSubmit(new Event("submit") as any, {
+          body: { augmentedPrompt },
+        })
       }
     } catch (error) {
-      console.error('Error sending message:', error)
+      console.error("Error sending message:", error)
     }
+  
     setIsLoading(false)
   }
+  
+  useEffect(() => {
+    if (initialPrompt) {
+      setInput(initialPrompt) // update chat input UI
+      processPrompt(initialPrompt)
+    }
+  }, [initialPrompt])
+  
+  const handleEnhancedSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    await processPrompt(input)
+  }
+  
   return (
     <div className=" border bg-background flex flex-col w-full mx-auto h-screen">
       <div className="flex-1 overflow-hidden ">
