@@ -14,12 +14,12 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
         remarkPlugins={[remarkGfm]}
         components={{
           p: ({ children }) => (
-            <p className="text-black dark:text-primary-foreground my-4 whitespace-pre-line">
+            <p className=" dark:text-primary-foreground my-4 whitespace-pre-line">
               {children}
             </p>
           ),
           pre: ({ children }) => (
-            <pre className="overflow-x-auto whitespace-pre-wrap break-words bg-gray-100 dark:bg-gray-900 text-sm rounded-lg p-4 my-4">
+            <pre className="overflow-x-auto whitespace-pre-wrap break-words  dark:bg-gray-900 text-sm rounded-lg p-4 my-4">
               {children}
             </pre>
           ),
@@ -48,7 +48,7 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
             <ol className="list-decimal list-inside space-y-2">{children}</ol>
           ),
           li: ({ children }) => (
-            <li className="pl-1 text-black dark:text-primary-foreground">
+            <li className="pl-1  dark:text-primary-foreground">
               {children}
             </li>
           ),

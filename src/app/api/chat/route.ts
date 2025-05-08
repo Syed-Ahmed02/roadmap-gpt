@@ -17,28 +17,11 @@ export async function POST(req: Request) {
        The output should be in the following JSON format:
        {
         "weekNumber: {
-          description: "descriptionOfWeekAndLearningGoals"
-          requiredHours:"requiredHoursPerDay"
-          courses:{
-            course:{
-              courseName: "releventCourseName"
-              courseLink: "linkToCourse"
-            },
-          },
-          project:{
-            projectTitle:"titleOfProject",
-            projectDescription:"descriptionOfProject",
-          }
-          addtionalResources:{
-            resource:{
-              title:"titleOfResource",
-              link:"linkOfResource",
-            }
-          }
+          title: titleGoesHere,
+          content: contentGoesHere,
         },
-        "additionalTips":"anyAdditionalTips",
-        "additionalResources":"anyAdditionalResources"
        }
+       The title field is a string and the content field should be Markdown string of the content
       `,
   });
 
