@@ -1,101 +1,115 @@
-"use client"
+"use client";
 
-import { CornerDownLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from "@/components/ui/chat-bubble"
-import { ChatMessageList } from "@/components/ui/chat-message-list"
-import { ChatInput } from "@/components/ui/chat-input"
-import { useChat } from "@ai-sdk/react"
-import { useEffect, useState } from "react"
-import StyledMarkdown from "./StyledMarkdown"
+import { CornerDownLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  ChatBubble,
+  ChatBubbleAvatar,
+  ChatBubbleMessage,
+} from "@/components/ui/chat-bubble";
+import { ChatMessageList } from "@/components/ui/chat-message-list";
+import { ChatInput } from "@/components/ui/chat-input";
+import { useEffect, useState } from "react";
+import StyledMarkdown from "./StyledMarkdown";
+import {
+  generatePromptEmbedding,
+  getEmbeddingMetadata,
+} from "@/utils/apiCalls";
+import { RoadmapSchema } from "@/app/api/chat/schema";
+import { experimental_useObject as useObject } from "@ai-sdk/react";
+
 type ChatProps = {
   initialPrompt: string;
-}
-import { generatePromptEmbedding, getEmbeddingMetadata } from "@/utils/apiCalls"
-export function Chat({initialPrompt}: ChatProps) {
-  const [isLoading,setIsLoading] = useState(Boolean)
+};
 
-  const { messages, input, handleInputChange, handleSubmit: originalHandleSubmit,setInput } = useChat({
+export function Chat({ initialPrompt }: ChatProps) {
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { object, submit } = useObject({
     api: "/api/chat",
-    initialMessages: [
-      {
-        id: "1",
-        role: "assistant",
-        content: "Hello! I'll help you create a learning roadmap. What would you like to learn?",
-      },
-    ],
-    initialInput:initialPrompt,
-  })
+    schema: RoadmapSchema,
+  });
+
+  useEffect(() => {
+    console.log("Raw object:", object);
+    console.log("Object type:", typeof object);
+    console.log("Is array?", Array.isArray(object));
+  }, [object]);
+
   const processPrompt = async (prompt: string) => {
-    if (prompt.trim().length === 0) return
-  
-    setIsLoading(true)
-  
+    if (prompt.trim().length === 0) return;
+
     try {
-      console.log('Submitting message:', prompt)
-  
-      const embedding = await generatePromptEmbedding(prompt)
+      setIsLoading(true);
+      const embedding = await generatePromptEmbedding(prompt);
       if (!embedding.error) {
-        const metadata = await getEmbeddingMetadata(embedding.embedding!)
-  
-        const formattedContexts = metadata.length > 0
-          ? metadata.map((context: { source: string; text: string }) => `
+        const metadata = await getEmbeddingMetadata(embedding.embedding!);
+
+        const formattedContexts =
+          metadata.length > 0
+            ? metadata
+                .map(
+                  (context: { source: string; text: string }) => `
             Source: ${context?.source}
             Text: ${context?.text}
-          `).join('\n')
-          : "No relevant context found."
-  
+          `
+                )
+                .join("\n")
+            : "No relevant context found.";
+
         const augmentedPrompt = `
         Context from knowledge base:
         ${formattedContexts}
-  
+
         User query:
         ${prompt}
-  
+
         Based on the above context and the user's query, provide a detailed response.
-        `
-  
-        await originalHandleSubmit(new Event("submit") as any, {
-          body: { augmentedPrompt },
-        })
+        `;
+
+        submit({ augmentedPrompt });
       }
     } catch (error) {
-      console.error("Error sending message:", error)
+      console.error("Error sending message:", error);
+    } finally {
+      setIsLoading(false);
     }
-  
-    setIsLoading(false)
-  }
-  
+  };
+
   useEffect(() => {
     if (initialPrompt) {
-      setInput(initialPrompt) // update chat input UI
-      processPrompt(initialPrompt)
+      setInput(initialPrompt);
+      processPrompt(initialPrompt);
     }
-  }, [initialPrompt])
-  
+  }, [initialPrompt]);
+
   const handleEnhancedSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    await processPrompt(input)
-  }
-  
+    e.preventDefault();
+    await processPrompt(input);
+    setInput("");
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
+
   return (
-    <div className=" border bg-background flex flex-col w-full mx-auto h-screen">
-      <div className="flex-1 overflow-hidden ">
-        
-        <ChatMessageList smooth={true}  >
-          {messages.map((message) => (
-            <ChatBubble key={message.id} variant={message.role === "user" ? "sent" : "received"}>
+    <div className="border bg-background flex flex-col w-full mx-auto h-screen">
+      <div className="flex-1 overflow-hidden">
+      <ChatMessageList smooth={true}  >
+          {object?.weekNumber?.map((message,index) => (
+            <ChatBubble key={index} variant={ "received"}>
               <ChatBubbleAvatar
                 className="h-8 w-8 shrink-0"
                 src={
-                  message.role === "user"
-                    ? `https://avatar.iran.liara.run/public/30`
-                    : `https://avatar.iran.liara.run/public/10`
+                 
+                     `https://avatar.iran.liara.run/public/10`
                 }
-                fallback={message.role === "user" ? "US" : "AI"}
+                fallback={ "AI"}
               />
-              <ChatBubbleMessage variant={message.role === "user" ? "sent" : "received"}>
-                <StyledMarkdown content={message.content} />
+              <ChatBubbleMessage variant={"received"}>
+                <StyledMarkdown content={message?.content || ""} />
               </ChatBubbleMessage>
             </ChatBubble>
           ))}
@@ -111,7 +125,7 @@ export function Chat({initialPrompt}: ChatProps) {
           )}
         </ChatMessageList>
       </div>
-      <div className="p-4 border-t ">
+      <div className="p-4 border-t">
         <form
           onSubmit={handleEnhancedSubmit}
           className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
@@ -136,5 +150,5 @@ export function Chat({initialPrompt}: ChatProps) {
         </form>
       </div>
     </div>
-  )
+  );
 }

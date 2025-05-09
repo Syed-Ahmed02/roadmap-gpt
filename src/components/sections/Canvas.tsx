@@ -3,11 +3,11 @@ import "@xyflow/react/dist/style.css";
 import { useState } from "react";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "../ui/drawer";
 
-import { ReactFlow, Background, useNodesState, Edge, NodeProps } from "@xyflow/react";
+import { ReactFlow, Background, useNodesState, Edge, NodeProps, Node as FlowNode } from "@xyflow/react";
 import ToggleCardNode from "../ToggleCardNode";
 import StyledMarkdown from "../StyledMarkdown";
 
-export interface CustomNodeData {
+export interface CustomNodeData extends Record<string, unknown> {
   title: string;
   content: string;
   onShowSidebar?: (id: string, data: CustomNodeData) => void;
@@ -68,39 +68,12 @@ const roadmapData: Record<string, { title: string; content: string }> =
   }
 }
 
-const nodes = Object.entries(roadmapData).map(([id, value], idx) => ({
-  id,
-  type: "custom",
-  position: { x: 100, y: idx * 150 }, // Stagger vertically for visibility
-  data: {
-    title: value.title,
-    content: value.content,
-  } as unknown as CustomNodeData,
-}));
+interface CanvasProps {
+  nodes: FlowNode<CustomNodeData>[];
+  edges: Edge[];
+}
 
-const edges = Object.keys(roadmapData)
-  .slice(0, -1)
-  .map((id, idx) => ({
-    id: `e${id}-${Number(id) + 1}`,
-    source: id,
-    target: String(Number(id) + 1),
-    type: "default",
-  }));
-// const nodes = [
-//   {
-//     id: "1",
-//     type: "custom",
-//     position: { x: 100, y: 100 },
-//     data: {
-//       title:"test",
-//       string:"md"
-//     },
-//   },
-// ];
-
-// const edges: Edge[] = [];
-
-export function Canvas() {
+export function Canvas({ nodes, edges }: CanvasProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedNode, setSelectedNode] = useState<{ id: string; data: CustomNodeData } | null>(null);
 

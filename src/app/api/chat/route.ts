@@ -1,11 +1,15 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import { streamText } from "ai";
+import { streamObject,streamText } from "ai";
+import { RoadmapSchema } from "./schema";
 
 export const maxDuration = 60;
 
 export async function POST(req: Request) {
   const { augmentedPrompt } = await req.json();
-  const result = streamText({
+  console.log('Server received prompt:', augmentedPrompt);
+
+  const result = streamObject({
+    schema: RoadmapSchema,
     model: anthropic("claude-3-7-sonnet-20250219"),
     prompt: augmentedPrompt,
     system: `You are a professional career advisor.
@@ -16,14 +20,24 @@ export async function POST(req: Request) {
        A single week can have multiple courses and resources,
        The output should be in the following JSON format:
        {
-        "weekNumber: {
-          title: titleGoesHere,
-          content: contentGoesHere,
-        },
+         "1": {
+           "title": "Week 1 Title",
+           "content": "Week 1 Content"
+         },
+         "2": {
+           "title": "Week 2 Title",
+           "content": "Week 2 Content"
+         }
        }
        The title field is a string and the content field should be Markdown string of the content
       `,
+      onError(event) {
+        console.log(event.error)
+      },
+      onFinish(event){
+        console.log(event.object)
+      }
   });
-
-  return result.toDataStreamResponse();
+  
+  return result.toTextStreamResponse();
 }

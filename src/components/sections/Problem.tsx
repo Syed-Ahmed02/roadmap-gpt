@@ -38,7 +38,7 @@ export default function Problem() {
                 <div className="max-w-6xl">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
                         {problems.map((problem, index) => (
-                            <Card className="bg-background border-none shadow-none">
+                            <Card className="bg-background border-none shadow-none" key={index}>
                                 <CardContent className="p-6 space-y-4">
                                     <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
                                         <problem.icon className="w-6 h-6 text-foreground" />
