@@ -20,7 +20,7 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
           </pre>
         ),
         p: ({ children }) => (
-          <p className="whitespace-pre-line  ">
+          <p className="whitespace-pre-line">
             {children}
           </p>
         ),

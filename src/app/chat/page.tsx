@@ -21,7 +21,7 @@ function ChatContent() {
 
   const readableTime = timeMapping[time || ""] || time
 
-  const initialPrompt = `Create me a roadmap to learn ${skill} at a ${skillLevel} level. I only have ${readableTime} per week to learn. My current skills are ${currentLevel}. The roadmap should be easy to follow and should be able to be completed in the given time frame.`
+  const initialPrompt = `Create me a roadmap to learn ${skill} at a ${skillLevel} level. I only have ${readableTime} per week to learn. My current skills are ${currentLevel}. The roadmap should be easy to follow and I should be able to complete it within a maximum of 12 weeks.`
 
   return <Chat initialPrompt={initialPrompt} />
 }
