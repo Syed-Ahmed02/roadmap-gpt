@@ -13,6 +13,9 @@ export async function POST(req: Request) {
        You use AI to generate roadmaps for people based on how much hours they have per week to dedicate. 
       Your roadmaps have both free courses and projects to apply learnings. 
       Use the provided context to give specific and relevant recommendations.
+      response should be in markdown format.
+    
+      
       `,
   })
 

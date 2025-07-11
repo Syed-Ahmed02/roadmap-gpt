@@ -12,14 +12,15 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
     <div className="prose dark:prose-invert max-w-none">
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
+      className="prose dark:prose-invert max-w-none space-y-4"
       components={{
         pre: ({ children }) => (
-          <pre className="whitespace-pre-wrap break-words bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+          <pre className="whitespace-pre-wrap break-words bg-gray-100  p-4 rounded-lg">
             {children}
           </pre>
         ),
         p: ({ children }) => (
-          <p className="whitespace-pre-line text-black dark:text-primary-foreground">
+          <p className="whitespace-pre-line  ">
             {children}
           </p>
         ),
@@ -34,8 +35,34 @@ const StyledMarkdown: React.FC<StyledMarkdownProps> = ({ content }) => {
           >
             {children}
           </Link>
-        )
-        
+        ),
+        h1: ({ children }) => (
+          <h1 className="text-2xl font-bold">{children}</h1>
+        ),
+        h2: ({ children }) => (
+          <h2 className="text-xl font-bold">{children}</h2>
+        ),
+        h3: ({ children }) => (
+          <h3 className="text-lg font-bold">{children}</h3>
+        ),
+        h4: ({ children }) => (
+          <h4 className="text-base font-bold">{children}</h4>
+        ),
+        h5: ({ children }) => (
+          <h5 className="text-sm font-bold">{children}</h5>
+        ),
+        h6: ({ children }) => (
+          <h6 className="text-xs font-bold">{children}</h6>
+        ),
+        ul: ({ children }) => (
+          <ul className="list-disc list-inside">{children}</ul>
+        ),
+        ol: ({ children }) => (
+          <ol className="list-decimal list-inside">{children}</ol>
+        ),
+        li: ({ children }) => (
+          <li className="list-disc list-inside">{children}</li>
+        ),
       }}
     >
       {content}

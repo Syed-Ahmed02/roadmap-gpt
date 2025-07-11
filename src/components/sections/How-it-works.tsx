@@ -208,10 +208,10 @@ const Feature = ({
             <div className="">
                 <div className="container flex w-full flex-col items-center justify-center p-4">
                     <div className="mx-auto max-w-5xl text-center">
-                        <h4 className="text-xl font-bold tracking-tight text-black dark:text-white">
+                        <h4 className="text-xl font-bold tracking-tight">
                             Our Solution
                         </h4>
-                        <h2 className="text-4xl font-bold tracking-tight text-black dark:text-white sm:text-6xl">
+                        <h2 className="text-4xl font-bold tracking-tight  sm:text-6xl">
                             It's a Ridiculously Simple Process
                         </h2>
                     </div>
